@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para ti 💜</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #c7b6ff, #9b7cff, #6a5acd);
+      padding: 20px;
+      overflow: hidden;
+      color: #3a235e;
+    }
+
+    h2 {
+      color: #4b2c83;
+    }
+
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    input {
+      background-color: #f3efff;
+      color: #3a235e;
+    }
+
+    button {
+      background: linear-gradient(135deg, #7f5cff, #9b7cff);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 18px;
+      margin-top: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    #galeria { display: none; }
+    #final { display: none; margin-top: 30px; }
+
+    #error {
+      color: #6b1fa1;
+      font-weight: bold;
+    }
+
+    /* ALERTA BONITA */
+    #alerta {
+      display: none;
+      background: linear-gradient(135deg, #ffffff, #efe9ff);
+      color: #5a2d9c;
+      padding: 15px 20px;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 90%;
+      font-weight: bold;
+      animation: aparecer 0.3s ease;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+      to { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="login">
+    <h2>Iniciar sesión</h2>
+    <input type="text" id="usuario" placeholder="Usuario"><br>
+    <input type="password" id="password" placeholder="Contraseña"><br>
+    <button onclick="login()">Entrar</button>
+    <p id="error"></p>
+  </div>
+
+  <!-- GALERÍA -->
+  <div id="galeria">
+    <img id="imagen" src=""><br>
+    <button id="btnSiguiente" onclick="siguiente()">Siguiente</button>
+
+    <div id="final">
+      <h2>¿Aceptas amarme para toda la vida? 💜</h2>
+      <button onclick="respuestaSi()">Sí</button>
+      <button id="btnNo">No</button>
+    </div>
+  </div>
+
+  <!-- ALERTA -->
+  <div id="alerta"></div>
+
+  <script>
+    // CREDENCIALES
+    const usuarioCorrecto = "criss";
+    const passwordCorrecto = "01042023";
+
+    // IMÁGENES
+    const imagenes = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
+    let indice = 0;
+
+    function login() {
+      const user = document.getElementById("usuario").value;
+      const pass = document.getElementById("password").value;
+      const error = document.getElementById("error");
+      error.innerText = "";
+
+      if (user !== usuarioCorrecto && pass !== passwordCorrecto) {
+        error.innerText = "Usuario y contraseña incorrectos";
+        return;
+      }
+      if (user !== usuarioCorrecto) {
+        error.innerText = "Usuario incorrecto";
+        return;
+      }
+      if (pass !== passwordCorrecto) {
+        error.innerText = "Contraseña incorrecta";
+        return;
+      }
+
+      document.getElementById("login").style.display = "none";
+      document.getElementById("galeria").style.display = "block";
+      mostrarImagen();
+    }
+
+    function mostrarImagen() {
+      document.getElementById("imagen").src = imagenes[indice];
+    }
+
+    function siguiente() {
+      indice++;
+      if (indice < imagenes.length) {
+        mostrarImagen();
+      } else {
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("btnSiguiente").style.display = "none";
+        document.getElementById("final").style.display = "block";
+      }
+    }
+
+    function respuestaSi() {
+      alert("💜 Sabía que dirías que sí. Te amo mi amorcito lindo 💜");
+    }
+
+    // BOTÓN NO + MENSAJES
+    const btnNo = document.getElementById("btnNo");
+    const alerta = document.getElementById("alerta");
+    let intentosNo = 0;
+
+    const mensajes = [
+      "¿Estás seguro? 🥺",
+      "¿De verdad no me quieres? 💔",
+      "Más vale que digas que sí 😌",
+      "Es tu última advertencia 😤",
+      "Aquí no hay opción, es sí o sí 💜"
+    ];
+
+    btnNo.addEventListener("touchstart", manejarNo);
+    btnNo.addEventListener("mouseover", manejarNo);
+
+    function manejarNo() {
+      moverBoton();
+      mostrarMensaje();
+    }
+
+    function moverBoton() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 120);
+      btnNo.style.position = "absolute";
+      btnNo.style.left = x + "px";
+      btnNo.style.top = y + "px";
+    }
+
+    function mostrarMensaje() {
+      const texto = intentosNo < mensajes.length
+        ? mensajes[intentosNo]
+        : "Es sí o sí 💜";
+
+      alerta.innerText = texto;
+      alerta.style.display = "block";
+
+      setTimeout(() => {
+        alerta.style.display = "none";
+      }, 2000);
+
+      intentosNo++;
+    }
+  </script>
+
+</body>
+</html>
